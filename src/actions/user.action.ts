@@ -7,7 +7,6 @@ import { eq } from "drizzle-orm";
 
 export async function syncUser() {
   try {
-    console.log('here');
     
     const { userId } = await auth();
     const user = await currentUser();
@@ -22,7 +21,6 @@ export async function syncUser() {
       .from(users)
       .where(eq(users.clerkId, userId));
 
-    console.log({existingUser});
     if (existingUser.length > 0) return existingUser;
     const newUser: NewUser = {
       name: `${user.firstName || ""} ${user.lastName || ""}`,

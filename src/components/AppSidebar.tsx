@@ -77,7 +77,7 @@ function AppSidebar() {
         </SidebarContent>
         <SidebarFooter>
           <SignOutButton>
-            <Button>
+            <Button className="cursor-pointer">
               <LogOut></LogOut>
               <span>SignOut</span>
             </Button>
