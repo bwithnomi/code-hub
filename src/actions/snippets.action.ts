@@ -189,14 +189,16 @@ export const viewSnippetByShareId = async (shareId: string) => {
   if (!snippet) return undefined;
 
   if (user) {
-    const view = await db.query.snippetViews.findFirst({
-      where: (snippetViews, { eq }) => {
-        return (
-          eq(snippetViews.viewerId, user.id) &&
-          eq(snippetViews.snippetId, snippet.id)
-        );
-      },
-    });
+
+    const view = await db.query.snippetViews
+      .findFirst({
+        where: (snippetViews, { eq, and }) => {
+          return and(
+            eq(snippetViews.viewerId, user.id),
+            eq(snippetViews.snippetId, snippet.id)
+          );
+        },
+      });
 
     if (!view) {
       await db.insert(snippetViews).values({
@@ -207,9 +209,9 @@ export const viewSnippetByShareId = async (shareId: string) => {
     }
   }
 
-  const views = db.$count(snippetViews, eq(snippetViews.snippetId, snippet.id))
+  const views = db.$count(snippetViews, eq(snippetViews.snippetId, snippet.id));
 
-  return {snippet, views};
+  return { snippet, views };
 };
 
 export const getRecentSnippets = async () => {
