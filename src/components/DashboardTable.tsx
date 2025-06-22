@@ -13,7 +13,11 @@ const DashboardTable = () => {
   useEffect(() => {
     startLoading(async () => {
       const res = await getRecentSnippets();
-      setData(res);
+      if (!res.data) {
+        setData([]);
+        return;
+      }
+      setData(res.data);
     });
   }, []);
 
