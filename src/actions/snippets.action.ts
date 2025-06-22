@@ -30,6 +30,50 @@ export const getAllSnippets = async () => {
   return snippetWithFiles;
 };
 
+export const getMySnippets = async () => {
+  const { userId } = await auth();
+  if (!userId) {
+    return {
+      error: true,
+      status: 403,
+      message: "Unauthenticated user",
+      data: null,
+    };
+  }
+  const user = await db.query.users.findFirst({
+    columns: {
+      id: true,
+    },
+    where: (users, { eq }) => {
+      return eq(users.clerkId, userId);
+    },
+  });
+  if (!user) {
+    return {
+      error: true,
+      status: 403,
+      message: "Unauthenticated user",
+      data: null,
+    };
+  }
+  const snippetWithFiles = await db.query.snippets.findMany({
+    orderBy: (snippets, { desc }) => [desc(snippets.createdAt)],
+    with: {
+      files: true,
+    },
+    where: (snippets, { eq }) => {
+      return eq(snippets.userId, user.id);
+    },
+    limit: 5,
+  });
+  return {
+    error: false,
+    status: 200,
+    message: "Success",
+    data: snippetWithFiles,
+  };
+};
+
 export const saveSnippet = async (
   data: NewSnippet
 ): Promise<ServerResponse<NewSnippetDb | null>> => {
@@ -120,6 +164,31 @@ export const getSnippetByShareId = async (shareId: string) => {
 };
 
 export const getRecentSnippets = async () => {
+  const { userId } = await auth();
+  if (!userId) {
+    return {
+      error: true,
+      status: 403,
+      message: "Unauthenticated user",
+      data: null,
+    };
+  }
+  const user = await db.query.users.findFirst({
+    columns: {
+      id: true,
+    },
+    where: (users, { eq }) => {
+      return eq(users.clerkId, userId);
+    },
+  });
+  if (!user) {
+    return {
+      error: true,
+      status: 403,
+      message: "Unauthenticated user",
+      data: null,
+    };
+  }
   const snippetWithFiles = await db.query.snippets.findMany({
     columns: {
       visibility: true,
@@ -127,6 +196,9 @@ export const getRecentSnippets = async () => {
       updatedAt: true,
       id: true,
       shareId: true,
+    },
+    where: (snippets, { eq }) => {
+      return eq(snippets.userId, user.id);
     },
     orderBy: (snippets, { desc }) => [desc(snippets.updatedAt)],
     limit: 5,

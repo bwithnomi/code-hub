@@ -1,6 +1,6 @@
 "use client";
 
-import { getAllSnippets } from "@/actions/snippets.action";
+import { getAllSnippets, getMySnippets } from "@/actions/snippets.action";
 import { BaseSnippet } from "@/db/schema";
 import React, { useEffect, useState, useTransition } from "react";
 import SnippetCardSkeleton from "./SnippetCardSkeleton";
@@ -30,8 +30,8 @@ const Snippets = () => {
 
   useEffect(() => {
     startTransition(async () => {
-      const result = await getAllSnippets();
-      setSnippets(result);
+      const result = await getMySnippets();
+      setSnippets(result.data);
     });
   }, []);
 
