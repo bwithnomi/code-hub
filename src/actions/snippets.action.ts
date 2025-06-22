@@ -156,7 +156,7 @@ export const getSnippetByShareId = async (shareId: string) => {
       files: true,
     },
     where: (snippets, { eq }) => {
-      return eq(snippets.shareId, shareId);
+      return eq(snippets.shareId, shareId) && eq(snippets.visibility, "public");
     },
   });
 
