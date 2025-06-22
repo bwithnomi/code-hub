@@ -30,24 +30,24 @@ const DashboardOverview = () => {
   }
   return (
     <div className="grid grid-cols-4 mt-4 gap-4">
-      <div className="rounded-lg col-span-1 bg-indigo-300 p-8 flex gap-4 items-center">
-        <div className="div bg-white p-4 rounded-full">
+      <div className="rounded-lg col-span-1 bg-indigo-300 p-8 dark:bg-indigo-300 flex gap-4 items-center">
+        <div className="div bg-white text-black dark:text-black p-4 rounded-full">
           <Code></Code>
         </div>
         <div className="">
-          <p className="font-bold text-lg">Snippets</p>
-          <p className="text-gray-100 text-sm">
+          <p className="font-bold text-xl">Snippets</p>
+          <p className="text-gray-100 text-md font-bold">
             {parseInt(count)} {parseInt(count) > 1 ? "Files" : "File"}
           </p>
         </div>
       </div>
-      <div className="rounded-lg col-span-1 bg-indigo-300 p-8 flex gap-4 items-center">
-        <div className="div bg-white p-4 rounded-full">
+      <div className="rounded-lg col-span-1 bg-indigo-300 dark:bg-indigo-300  p-8 flex gap-4 items-center">
+        <div className="div bg-white p-4 rounded-full text-black dark:text-black">
           <Eye></Eye>
         </div>
         <div className="">
-          <p className="font-bold text-lg">Views</p>
-          <p className="text-gray-100 text-sm">
+          <p className="font-bold text-xl">Views</p>
+          <p className="text-gray-100 text-md font-bold">
             {parseInt(views)} {parseInt(views) > 1 ? "Views" : "View"}
           </p>
         </div>
