@@ -40,6 +40,7 @@ const codingLanguages = [
 
 const page = () => {
   const [saving, startSaving] = useTransition();
+  const [visibility, setVisibility] = useState<string | undefined>();
   // const [saving, setSaving] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("New Snippet");
   const [files, setFiles] = useState([{ language: "javascript", content: "" }]);
@@ -49,7 +50,7 @@ const page = () => {
     startSaving(async () => {
       const result = snippetSchema.safeParse({
         title,
-        visibility: "public",
+        visibility,
         files: [...files],
       });
 
@@ -113,6 +114,25 @@ const page = () => {
           ></EditableText>
         </div>
         <div className="flex justify-end items-center gap-2">
+          <Select
+            onValueChange={(value) => setVisibility(value)}
+            defaultValue={visibility}
+            disabled={saving}
+          >
+            <SelectTrigger className="w-[200px]">
+              <SelectValue placeholder="Change Visibility" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Visibility</SelectLabel>
+                <SelectItem value="public">Public</SelectItem>
+                <SelectItem value="private">Private</SelectItem>
+                {/* <SelectItem value="connections">
+                    Connections
+                  </SelectItem> */}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
           <Button type="submit" disabled={saving}>
             Save
           </Button>

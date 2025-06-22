@@ -156,6 +156,18 @@ export const getSnippetByShareId = async (shareId: string) => {
       files: true,
     },
     where: (snippets, { eq }) => {
+      return eq(snippets.shareId, shareId);
+    },
+  });
+
+  return snippet;
+};
+export const viewSnippetByShareId = async (shareId: string) => {
+  const snippet = await db.query.snippets.findFirst({
+    with: {
+      files: true,
+    },
+    where: (snippets, { eq }) => {
       return eq(snippets.shareId, shareId) && eq(snippets.visibility, "public");
     },
   });
