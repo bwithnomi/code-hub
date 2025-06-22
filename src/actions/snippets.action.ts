@@ -290,6 +290,35 @@ export const getSnippetCount = async () => {
   };
 };
 
+export const getViewsCount = async () => {
+  const { userId } = await auth();
+  const user = await db.query.users.findFirst({
+    columns: {
+      id: true,
+    },
+    where: (users, { eq }) => {
+      return eq(users.clerkId, userId!);
+    },
+  });
+  if (!user) {
+    return {
+      error: true,
+      status: 403,
+      message: "Unauthorized",
+      data: null,
+    };
+  }
+  const count = db.$count(snippetViews, eq(snippetViews.ownerId, user.id));
+  return {
+    error: false,
+    status: 200,
+    message: "",
+    data: {
+      count,
+    },
+  };
+};
+
 export const updateSnippet = async (data: UpdateSnippet) => {
   const validateData = snippetUpdateSchema.safeParse(data);
 

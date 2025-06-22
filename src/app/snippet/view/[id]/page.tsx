@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'; // ✅ disables route caching
+
 import { viewSnippetByShareId } from "@/actions/snippets.action";
 import { Eye } from "lucide-react";
 import Image from "next/image";
