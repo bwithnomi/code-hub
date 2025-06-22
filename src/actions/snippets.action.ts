@@ -203,14 +203,12 @@ export const getRecentSnippets = async () => {
     orderBy: (snippets, { desc }) => [desc(snippets.updatedAt)],
     limit: 5,
   });
-
-  return 
-    return {
-      error: false,
-      status: 200,
-      message: "success",
-      data: snippetWithFiles,
-    };
+  return {
+    error: false,
+    status: 200,
+    message: "success",
+    data: snippetWithFiles,
+  };
 };
 
 export const getSnippetCount = async () => {
