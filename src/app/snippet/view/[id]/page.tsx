@@ -5,7 +5,7 @@ const page = async ({params}:{params: Promise<{ id: string }>}) => {
     const {id} = await params;
     const snippet = await getSnippetByShareId(id);
   return (
-    <div className='flex items-start justify-center bg-slate-200 h-screen p-8'>
+    <div className='flex items-start justify-center bg-slate-200 h-screen p-8 overflow-scroll'>
         <div className="w-3xl py-8 shadow-2xl px-4 rounded-3xl bg-amber-100">
             <p className='text-center font-bold text-xl'>{snippet?.title}</p>
             <div className="">
