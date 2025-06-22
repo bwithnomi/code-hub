@@ -204,7 +204,13 @@ export const getRecentSnippets = async () => {
     limit: 5,
   });
 
-  return snippetWithFiles;
+  return 
+    return {
+      error: false,
+      status: 200,
+      message: "success",
+      data: snippetWithFiles,
+    };
 };
 
 export const getSnippetCount = async () => {
