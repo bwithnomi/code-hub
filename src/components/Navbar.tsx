@@ -25,7 +25,7 @@ async function Navbar() {
             <ThemeModeToggle></ThemeModeToggle>
             <Button variant="ghost" className="flex items-center gap-2" asChild>
               <Link
-                href={`dashboard/profile/`}
+                href={`/dashboard/profile/`}
               >
                 <UserIcon className="w-4 h-4" />
                 <span className="hidden lg:inline">Profile</span>

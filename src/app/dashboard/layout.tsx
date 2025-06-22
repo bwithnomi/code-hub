@@ -11,11 +11,11 @@ function layout({
   return (
     <SidebarProvider>
         <AppSidebar></AppSidebar>
-        <main className="min-h-screen flex flex-col w-full">
+        <main className="min-h-screen flex flex-col h-full overflow-hidden max-h-screen w-full">
           <div className="h-12">
             <Navbar></Navbar>
           </div>
-          <div className="overflow-scroll grid-rows-11 p-4">
+          <div className="overflow-hidden row-span-11 grow-1 h-full relative">
             {children}
           </div>
         </main>

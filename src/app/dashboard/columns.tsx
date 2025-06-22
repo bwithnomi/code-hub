@@ -1,47 +1,54 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { ColumnDef } from "@tanstack/react-table"
-import { Share } from "lucide-react"
+import { Button } from "@/components/ui/button";
+import { Timestamp } from "@/lib/day";
+import { ColumnDef } from "@tanstack/react-table";
+import { Share } from "lucide-react";
+import Link from "next/link";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Snippet = {
-  id: string
-  name: string
-  shared: "public" | "private" | "team"
-  size: string
-  last_modified: string
-}
+  id: number;
+  title: string;
+  visibility: "public" | "private" | "connections" | null;
+  updatedAt: Date;
+  shareId: string;
+};
 
 export const columns: ColumnDef<Snippet>[] = [
   {
-    accessorKey: "name",
-    header: "Name",
+    accessorKey: "title",
+    header: "Title",
+    cell: ({ row }) => {
+      return <p className="w-40 truncate">{row.getValue("title")}</p>;
+    },
   },
   {
-    accessorKey: "size",
-    header: "Size",
-  },
-  {
-    accessorKey: "shared",
+    accessorKey: "visibility",
     header: "Shared",
   },
   {
-    accessorKey: "last_modified",
+    accessorKey: "updatedAt",
     header: "Last Modified",
+    cell: ({ row }) => {
+      const date = new Date(row.getValue("updatedAt"));
+      return <p className="">{Timestamp(date)}</p>;
+    },
   },
   {
-    accessorKey: "share",
+    accessorKey: "shareId",
     header: "Share",
-    cell: ({row}) => {
-        return (
-            <div className="">
-                <Button>
-                    <Share/>
-                </Button>
-            </div>
-        )
-    }
+    cell: ({ row }) => {
+      return (
+        <div className="">
+          <Button>
+            <Link href={`/snippet/view/${row.getValue("shareId")}`} target="blank">
+              <Share />
+            </Link>
+          </Button>
+        </div>
+      );
+    },
   },
-]
+];

@@ -1,6 +1,6 @@
 {
-  "id": "a9632e56-f260-47bd-96b7-71aed3ce920c",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "2eae944a-f97e-4acf-8e19-2f369dd9c9e5",
+  "prevId": "a9632e56-f260-47bd-96b7-71aed3ce920c",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -65,8 +65,8 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -210,7 +210,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
