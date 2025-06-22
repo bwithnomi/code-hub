@@ -10,6 +10,7 @@ import {
 import { User, users } from "./users";
 import { relations } from "drizzle-orm";
 import { File, files } from "./files";
+import { SnippetView, snippetViews } from "./snippet-view";
 
 export const visibilityEnum = pgEnum("visibility", [
   "public",
@@ -32,7 +33,8 @@ export const snippetRelation = relations(snippets, ({ one, many }) => ({
     fields: [snippets.userId],
     references: [users.id],
   }),
-  files: many(files)
+  files: many(files),
+  views: many(snippetViews)
 }));
 
 export type Snippet = typeof snippets.$inferSelect;
@@ -40,5 +42,6 @@ export type NewSnippet = typeof snippets.$inferInsert;
 
 export type BaseSnippet = Snippet & {
   files?: File[],
+  views?: SnippetView[],
   user?: User,
 }

@@ -57,7 +57,7 @@ function AppSidebar() {
         </SidebarHeader>
         <SidebarContent>
           <SidebarGroup>
-            <SidebarGroupLabel>File Mananger</SidebarGroupLabel>
+            <SidebarGroupLabel>Dashbaord</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {items.map((item) => (

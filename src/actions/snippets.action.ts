@@ -7,6 +7,7 @@ import {
   NewSnippet as NewSnippetDb,
   files,
   Snippet,
+  snippetViews,
 } from "@/db/schema";
 import {
   NewSnippet,
@@ -163,16 +164,52 @@ export const getSnippetByShareId = async (shareId: string) => {
   return snippet;
 };
 export const viewSnippetByShareId = async (shareId: string) => {
-  const snippet = await db.query.snippets.findFirst({
-    with: {
-      files: true,
-    },
-    where: (snippets, { eq }) => {
-      return eq(snippets.shareId, shareId) && eq(snippets.visibility, "public");
-    },
-  });
+  const { userId } = await auth();
+  const [snippet, user] = await Promise.all([
+    db.query.snippets.findFirst({
+      with: {
+        files: true,
+      },
+      where: (snippets, { eq }) => {
+        return (
+          eq(snippets.shareId, shareId) && eq(snippets.visibility, "public")
+        );
+      },
+    }),
+    await db.query.users.findFirst({
+      columns: {
+        id: true,
+      },
+      where: (users, { eq }) => {
+        return eq(users.clerkId, userId || "");
+      },
+    }),
+  ]);
 
-  return snippet;
+  if (!snippet) return undefined;
+
+  if (user) {
+    const view = await db.query.snippetViews.findFirst({
+      where: (snippetViews, { eq }) => {
+        return (
+          eq(snippetViews.viewerId, user.id) &&
+          eq(snippetViews.snippetId, snippet.id)
+        );
+      },
+    });
+
+    if (!view) {
+      await db.insert(snippetViews).values({
+        snippetId: snippet.id,
+        viewerId: user.id,
+        ownerId: snippet.userId,
+      });
+    }
+  }
+
+  const views = db.$count(snippetViews, eq(snippetViews.snippetId, snippet.id))
+
+  return {snippet, views};
 };
 
 export const getRecentSnippets = async () => {
