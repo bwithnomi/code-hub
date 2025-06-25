@@ -17,15 +17,17 @@ import {
 } from "@/lib/zodSchema";
 import { auth } from "@clerk/nextjs/server";
 import { desc, eq } from "drizzle-orm";
-import { redirect } from "next/navigation";
 
 export const getAllSnippets = async () => {
   const snippetWithFiles = await db.query.snippets.findMany({
+    where: (snippets, { eq }) => {
+      return eq(snippets.visibility, "public");
+    },
     orderBy: (snippets, { desc }) => [desc(snippets.createdAt)],
     with: {
       files: true,
     },
-    limit: 5,
+    limit: 9,
   });
 
   return snippetWithFiles;
@@ -65,7 +67,7 @@ export const getMySnippets = async () => {
     where: (snippets, { eq }) => {
       return eq(snippets.userId, user.id);
     },
-    limit: 5,
+    limit: 10,
   });
   return {
     error: false,
@@ -261,7 +263,7 @@ export const getRecentSnippets = async () => {
   };
 };
 
-export const getSnippetCount = async () => {
+export const getMySnippetCount = async () => {
   const { userId } = await auth();
   const user = await db.query.users.findFirst({
     columns: {
@@ -280,6 +282,18 @@ export const getSnippetCount = async () => {
     };
   }
   const count = db.$count(snippets, eq(snippets.userId, user.id));
+  return {
+    error: false,
+    status: 200,
+    message: "",
+    data: {
+      count,
+    },
+  };
+};
+
+export const getSearchableSnippetCount = async () => {
+  const count = db.$count(snippets, eq(snippets.visibility, "public"));
   return {
     error: false,
     status: 200,
@@ -382,5 +396,68 @@ export const updateSnippet = async (data: UpdateSnippet) => {
     status: 200,
     message: "Success",
     data: snippet,
+  };
+};
+
+export const searchSnippets = async (lang: string) => {
+  const { userId } = await auth();
+  if (!userId) {
+    return {
+      error: true,
+      status: 403,
+      message: "Unauthenticated user",
+      data: null,
+    };
+  }
+  const user = await db.query.users.findFirst({
+    columns: {
+      id: true,
+    },
+    where: (users, { eq }) => {
+      return eq(users.clerkId, userId);
+    },
+  });
+  if (!user) {
+    return {
+      error: true,
+      status: 403,
+      message: "Unauthenticated user",
+      data: null,
+    };
+  }
+
+  if (lang != "any") {
+    const snippetWithFiles = await db.query.files.findMany({
+      columns: {
+        snippetId: true,
+      },
+      where: (files, { eq }) => {
+        return eq(files.language, lang);
+      },
+      orderBy: (snippets, { desc }) => [desc(snippets.createdAt)],
+      limit: 100,
+    });
+
+    let snippet;
+  }
+  const snippetWithFiles = await db.query.snippets.findMany({
+    columns: {
+      visibility: true,
+      title: true,
+      updatedAt: true,
+      id: true,
+      shareId: true,
+    },
+    where: (snippets, { eq }) => {
+      return eq(snippets.userId, user.id);
+    },
+    orderBy: (snippets, { desc }) => [desc(snippets.updatedAt)],
+    limit: 5,
+  });
+  return {
+    error: false,
+    status: 200,
+    message: "success",
+    data: snippetWithFiles,
   };
 };

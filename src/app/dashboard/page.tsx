@@ -1,5 +1,3 @@
-import { Code } from "lucide-react";
-import { getSnippetCount } from "@/actions/snippets.action";
 import DashboardTable from "@/components/DashboardTable";
 import DashboardOverview from "@/components/DashboardOverview";
 

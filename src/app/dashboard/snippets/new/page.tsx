@@ -14,35 +14,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { NewSnippet, snippetSchema } from "@/lib/zodSchema";
-import { Delete } from "lucide-react";
+import { CirclePlus, Delete, Save } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import { toast, Toaster } from "sonner";
+import { codingLanguages } from "@/app/constants";
 
-const codingLanguages = [
-  "javascript",
-  "python",
-  "typescript",
-  "tsx",
-  "jsx",
-  "java",
-  "php",
-  "yaml",
-  "html",
-  "css",
-  "go",
-  "json",
-  "plaintext",
-  "ruby",
-  "rust",
-  "xml",
-];
 
 const page = () => {
   const [saving, startSaving] = useTransition();
-  const [visibility, setVisibility] = useState<string | undefined>();
+  const [visibility, setVisibility] = useState<string>("public");
   // const [saving, setSaving] = useState<boolean>(false);
-  const [title, setTitle] = useState<string>("New Snippet");
+  const [title, setTitle] = useState<string>("");
   const [files, setFiles] = useState([{ language: "javascript", content: "" }]);
   const router = useRouter();
 
@@ -66,7 +49,7 @@ const page = () => {
       const res = await saveSnippet(result.data as NewSnippet);
 
       if (res.data) {
-        toast("Snippet saved");
+        toast.info("Snippet saved");
         router.push("/dashboard/snippets");
       } else {
         toast.error(res.message);
@@ -111,6 +94,7 @@ const page = () => {
             value={title}
             onChange={(val) => setTitle(val)}
             className="font-bold text-xl"
+            placeholder="Click to edit Snippet Title"
           ></EditableText>
         </div>
         <div className="flex justify-end items-center gap-2">
@@ -133,7 +117,8 @@ const page = () => {
               </SelectGroup>
             </SelectContent>
           </Select>
-          <Button type="submit" disabled={saving}>
+          <Button type="submit" disabled={saving} className="cursor-pointer">
+            <Save />
             Save
           </Button>
           <Button
@@ -142,8 +127,10 @@ const page = () => {
             }}
             type="button"
             disabled={files.length >= 3}
+             className="cursor-pointer"
           >
-            Add New
+            <CirclePlus />
+            Add Editor
           </Button>
         </div>
       </div>

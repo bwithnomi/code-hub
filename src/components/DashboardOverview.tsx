@@ -1,6 +1,6 @@
 "use client";
 
-import { getSnippetCount, getViewsCount } from "@/actions/snippets.action";
+import { getMySnippetCount, getViewsCount } from "@/actions/snippets.action";
 import { Code, Eye } from "lucide-react";
 import React, { useEffect, useState, useTransition } from "react";
 import { Skeleton } from "./ui/skeleton";
@@ -12,7 +12,7 @@ const DashboardOverview = () => {
   useEffect(() => {
     startLoading(async () => {
       const [snippetCount, viewsCount] = await Promise.all([
-        getSnippetCount(),
+        getMySnippetCount(),
         getViewsCount(),
       ]);
       setCount((await snippetCount.data?.count!).toString() || "");

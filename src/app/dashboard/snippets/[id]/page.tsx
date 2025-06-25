@@ -25,29 +25,11 @@ import {
   snippetUpdateSchema,
   UpdateSnippet,
 } from "@/lib/zodSchema";
-import { Delete } from "lucide-react";
+import { CirclePlus, Delete, Save } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import { toast, Toaster } from "sonner";
-
-const codingLanguages = [
-  "javascript",
-  "python",
-  "typescript",
-  "tsx",
-  "jsx",
-  "java",
-  "php",
-  "yaml",
-  "html",
-  "css",
-  "go",
-  "json",
-  "plaintext",
-  "ruby",
-  "rust",
-  "xml",
-];
+import { codingLanguages } from "@/app/constants";
 
 const page = () => {
   const { id } = useParams();
@@ -197,7 +179,8 @@ const page = () => {
               </SelectGroup>
             </SelectContent>
           </Select>
-          <Button type="submit" disabled={saving}>
+          <Button type="submit" disabled={saving} className="cursor-pointer">
+            <Save/>
             Save
           </Button>
           <Button
@@ -206,7 +189,9 @@ const page = () => {
             }}
             type="button"
             disabled={files.length >= 3}
+             className="cursor-pointer"
           >
+            <CirclePlus/>
             Add New
           </Button>
         </div>

@@ -1,0 +1,18 @@
+export const codingLanguages = [
+  "javascript",
+  "python",
+  "typescript",
+  "tsx",
+  "jsx",
+  "java",
+  "php",
+  "yaml",
+  "html",
+  "css",
+  "go",
+  "json",
+  "plaintext",
+  "ruby",
+  "rust",
+  "xml",
+];

@@ -9,9 +9,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "./ui/card";
+} from "../../../components/ui/card";
 import { BaseSnippet } from "@/db/schema";
-import { Button } from "./ui/button";
+import { Button } from "../../../components/ui/button";
 import {
   ExternalLink,
   Globe,

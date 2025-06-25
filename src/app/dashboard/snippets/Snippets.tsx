@@ -1,23 +1,15 @@
 "use client";
 
-import { getAllSnippets, getMySnippets } from "@/actions/snippets.action";
+import { getMySnippets } from "@/actions/snippets.action";
 import { BaseSnippet } from "@/db/schema";
 import React, { useEffect, useState, useTransition } from "react";
-import SnippetCardSkeleton from "./SnippetCardSkeleton";
+import SnippetCardSkeleton from "../../../components/SnippetCardSkeleton";
 import { toast, Toaster } from "sonner";
 import SnippetCard from "./SnippetCard";
 
 const Snippets = () => {
   const [snippets, setSnippets] = useState<BaseSnippet[] | null>(null);
   const [isPending, startTransition] = useTransition();
-
-  const getLanguages = (snippet: BaseSnippet) => {
-    const newLanguages = snippet.files?.map((i) => {
-      return i.language;
-    });
-    let netSet = new Set(newLanguages);
-    return [...netSet];
-  };
 
   const deleteSingleSnippet = async (id: number) => {
     let tmpSnippets = [...snippets!];

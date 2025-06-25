@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 export const snippetSchema = z.object({
   title: z.string().min(1, 'Title is required'),
-  visibility: z.enum(['public', 'private', 'connections']),
+  visibility: z.enum(['public', 'private', 'connections'], {message: "Select Visibility"}),
   files: z.array(
     z.object({
       language: z.string().min(1, 'Language is required'),
