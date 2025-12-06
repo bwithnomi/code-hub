@@ -5,36 +5,15 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1749203507975,
-      "tag": "0000_majestic_sphinx",
+      "when": 1765030203769,
+      "tag": "0000_flippant_green_goblin",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "7",
-      "when": 1749204475678,
-      "tag": "0001_common_screwball",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1750586057786,
-      "tag": "0002_mute_jackpot",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1750587303660,
-      "tag": "0003_curvy_skaar",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1750587422904,
-      "tag": "0004_lazy_madame_masque",
+      "when": 1765031008559,
+      "tag": "0001_early_strong_guy",
       "breakpoints": true
     }
   ]

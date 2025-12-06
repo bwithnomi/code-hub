@@ -1,54 +1,37 @@
-"use client";
-
-import { getMySnippetCount, getViewsCount } from "@/actions/snippets.action";
 import { Code, Eye } from "lucide-react";
-import React, { useEffect, useState, useTransition } from "react";
-import { Skeleton } from "./ui/skeleton";
+import React from "react";
 
-const DashboardOverview = () => {
-  const [loading, startLoading] = useTransition();
-  const [count, setCount] = useState<string>("0");
-  const [views, setViews] = useState<string>("0");
-  useEffect(() => {
-    startLoading(async () => {
-      const [snippetCount, viewsCount] = await Promise.all([
-        getMySnippetCount(),
-        getViewsCount(),
-      ]);
-      setCount((await snippetCount.data?.count!).toString() || "");
-      setViews((await viewsCount.data?.count!).toString() || "");
-    });
-  }, []);
+interface DashboardOverviewProps {
+  snippetCount: number;
+  viewsCount: number;
+  maxSnippets: number;
+}
 
-  if (loading) {
-    return (
-      <div className="grid grid-cols-4 mt-4 gap-4">
-        <Skeleton className="w-full h-[120]"></Skeleton>
-        <Skeleton className="w-full h-[120]"></Skeleton>
-      </div>
-    );
-  }
+const DashboardOverview = ({ snippetCount, viewsCount, maxSnippets }: DashboardOverviewProps) => {
   return (
-    <div className="grid grid-cols-4 mt-4 gap-4">
-      <div className="rounded-lg col-span-1 bg-indigo-300 p-8 dark:bg-indigo-300 flex gap-4 items-center">
-        <div className="div bg-white text-black dark:text-black p-4 rounded-full">
-          <Code></Code>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mt-4 gap-4">
+      <div className="rounded-lg bg-indigo-300 p-6 sm:p-8 dark:bg-indigo-300 flex gap-4 items-center">
+        <div className="bg-white text-black dark:text-black p-4 rounded-full flex-shrink-0">
+          <Code className="h-6 w-6" />
         </div>
-        <div className="">
-          <p className="font-bold text-xl">Snippets</p>
-          <p className="text-gray-100 text-md font-bold">
-            {parseInt(count)} {parseInt(count) > 1 ? "Files" : "File"}
+        <div className="min-w-0">
+          <p className="font-bold text-lg sm:text-xl">Snippets</p>
+          <p className="text-gray-100 text-sm sm:text-md font-bold">
+            {snippetCount} {snippetCount !== 1 ? "Files" : "File"}
+            {maxSnippets !== Infinity && (
+              <span className="text-gray-200"> / {maxSnippets}</span>
+            )}
           </p>
         </div>
       </div>
-      <div className="rounded-lg col-span-1 bg-indigo-300 dark:bg-indigo-300  p-8 flex gap-4 items-center">
-        <div className="div bg-white p-4 rounded-full text-black dark:text-black">
-          <Eye></Eye>
+      <div className="rounded-lg bg-indigo-300 dark:bg-indigo-300 p-6 sm:p-8 flex gap-4 items-center">
+        <div className="bg-white p-4 rounded-full text-black dark:text-black flex-shrink-0">
+          <Eye className="h-6 w-6" />
         </div>
-        <div className="">
-          <p className="font-bold text-xl">Views</p>
-          <p className="text-gray-100 text-md font-bold">
-            {parseInt(views)} {parseInt(views) > 1 ? "Views" : "View"}
+        <div className="min-w-0">
+          <p className="font-bold text-lg sm:text-xl">Views</p>
+          <p className="text-gray-100 text-sm sm:text-md font-bold">
+            {viewsCount} {viewsCount !== 1 ? "Views" : "View"}
           </p>
         </div>
       </div>

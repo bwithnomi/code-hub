@@ -1,14 +1,17 @@
 import { relations } from 'drizzle-orm';
-import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
+import { pgEnum, pgTable, serial, text, timestamp, varchar } from 'drizzle-orm/pg-core';
 import { snippets } from './snippets';
 import { snippetViews } from './snippet-view';
+
+export const userTierEnum = pgEnum('user_tier', ['free', 'pro', 'enterprise']);
 
 export const users = pgTable('users', {
     id: serial().primaryKey(),
     name: text().notNull(),
     email: text().notNull().unique(),
-    clerkId: text().notNull().unique(),
+    clerkId: text('clerk_id').notNull().unique(),
     password: text().notNull(),
+    tier: userTierEnum().default('free'),
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });

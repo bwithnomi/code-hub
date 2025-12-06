@@ -1,4 +1,5 @@
 import {
+  index,
   integer,
   pgEnum,
   pgTable,
@@ -19,7 +20,11 @@ export const snippetViews = pgTable("snippet_views", {
   ownerId: integer("owner_id").references(() => users.id, {onDelete: "cascade"}),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
-});
+}, (table) => ({
+    snippetIdIdx: index('snippet_views_snippet_id_idx').on(table.snippetId),
+    viewerIdIdx: index('snippet_views_viewer_id_idx').on(table.viewerId),
+    ownerIdIdx: index('snippet_views_owner_id_idx').on(table.ownerId),
+}));
 
 export const snippetViewRelation = relations(snippetViews, ({ one, many }) => ({
   viewer: one(users, {

@@ -119,4 +119,14 @@
   body {
     @apply bg-background text-foreground;
   }
+  
+  /* Hide native clear button for search inputs */
+  input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  
+  input[type="search"]::-ms-clear {
+    display: none;
+  }
 }

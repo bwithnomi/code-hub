@@ -1,4 +1,4 @@
-import { integer, pgEnum, pgTable, serial, text, timestamp, varchar } from 'drizzle-orm/pg-core';
+import { index, integer, pgEnum, pgTable, serial, text, timestamp, varchar } from 'drizzle-orm/pg-core';
 import { Snippet, snippets } from './snippets';
 import { relations } from 'drizzle-orm';
 
@@ -10,7 +10,9 @@ export const files = pgTable('files', {
     snippetId: integer('snippet_id').references(() => snippets.id, {onDelete: "cascade", onUpdate: "cascade"}),
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at').defaultNow().notNull(),
-});
+}, (table) => ({
+    snippetIdIdx: index('files_snippet_id_idx').on(table.snippetId),
+}));
 
 export const fileRelations = relations(files, ({one}) => ({
     snippet: one(snippets, {

@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   Sidebar,
@@ -12,9 +14,9 @@ import {
   SidebarMenuItem,
 } from "./ui/sidebar";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Code, Home, Inbox, LogOut, Search, Settings } from "lucide-react";
 import { SignOutButton } from "@clerk/nextjs";
-import { Button } from "./ui/button";
 
 const items = [
   {
@@ -29,24 +31,26 @@ const items = [
   },
   {
     title: "Search",
-    url: "#",
+    url: "/dashboard/search",
     icon: Search,
   },
   {
     title: "Settings",
-    url: "#",
+    url: "/dashboard/settings",
     icon: Settings,
   },
 ];
 
 function AppSidebar() {
+  const pathname = usePathname();
+
   return (
     <div className="bg-red-300 h-full">
       <Sidebar className="" collapsible="icon">
         <SidebarHeader>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild>
+              <SidebarMenuButton asChild className="hover:bg-transparent hover:text-current">
                 <Link href="/dashboard">
                   <Code size={48} />
                   <span className="font-mono text-xl font-bold">CodeHub</span>
@@ -60,28 +64,35 @@ function AppSidebar() {
             <SidebarGroupLabel>Dashbaord</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {items.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
-                      <Link href={item.url}>
-                        <item.icon></item.icon>
-                        <span>{item.title}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
+                {items.map((item) => {
+                  const isActive = pathname === item.url || (item.url !== "/dashboard" && pathname.startsWith(item.url));
+                  return (
+                    <SidebarMenuItem key={item.title}>
+                      <SidebarMenuButton asChild isActive={isActive}>
+                        <Link href={item.url}>
+                          <item.icon></item.icon>
+                          <span>{item.title}</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
           <SidebarGroup />
         </SidebarContent>
         <SidebarFooter>
-          <SignOutButton>
-            <Button className="cursor-pointer">
-              <LogOut></LogOut>
-              <span>SignOut</span>
-            </Button>
-          </SignOutButton>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SignOutButton>
+                <SidebarMenuButton tooltip="Sign Out" className="cursor-pointer w-full">
+                  <LogOut />
+                  <span>SignOut</span>
+                </SidebarMenuButton>
+              </SignOutButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
         </SidebarFooter>
       </Sidebar>
     </div>

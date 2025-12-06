@@ -12,24 +12,28 @@ import { Skeleton } from "./ui/skeleton";
 
 const SnippetCardSkeleton = () => {
   return (
-    <Card className="col-span-1">
+    <Card className="col-span-1 w-full min-w-0">
       <CardHeader>
-        <CardTitle className="w-40 truncate">
-          <Skeleton className="w-full h-[16] rounded-full" />
+        <CardTitle className="truncate">
+          <Skeleton className="h-5 w-32 rounded-md" />
         </CardTitle>
         <CardDescription className="flex items-center gap-1">
-          <Skeleton className="w-[50] h-[16] rounded-full" />
+          <Skeleton className="h-4 w-20 rounded-md" />
         </CardDescription>
         <CardAction className="gap-2 flex">
-          <Skeleton className="w-[40] h-[36] rounded-2xl" />
-          <Skeleton className="w-[40] h-[36] rounded-2xl" />
+          <Skeleton className="h-9 w-9 rounded-md" />
+          <Skeleton className="h-9 w-9 rounded-md" />
         </CardAction>
       </CardHeader>
       <CardContent>
-        <Skeleton className="w-full h-[24] rounded-full" />
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-24 rounded-md" />
+          <Skeleton className="h-4 w-32 rounded-md" />
+        </div>
       </CardContent>
-      <CardFooter>
-        <Skeleton className="w-full h-[16] rounded-2xl" />
+      <CardFooter className="flex justify-between">
+        <Skeleton className="h-4 w-32 rounded-md" />
+        <Skeleton className="h-9 w-9 rounded-md" />
       </CardFooter>
     </Card>
   );

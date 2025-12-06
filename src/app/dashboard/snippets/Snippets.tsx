@@ -1,15 +1,18 @@
 "use client";
 
-import { getMySnippets } from "@/actions/snippets.action";
 import { BaseSnippet } from "@/db/schema";
-import React, { useEffect, useState, useTransition } from "react";
-import SnippetCardSkeleton from "../../../components/SnippetCardSkeleton";
+import React, { useState } from "react";
 import { toast, Toaster } from "sonner";
 import SnippetCard from "./SnippetCard";
+import { useRouter } from "next/navigation";
 
-const Snippets = () => {
-  const [snippets, setSnippets] = useState<BaseSnippet[] | null>(null);
-  const [isPending, startTransition] = useTransition();
+interface SnippetsProps {
+  initialSnippets: BaseSnippet[] | null;
+}
+
+const Snippets = ({ initialSnippets }: SnippetsProps) => {
+  const [snippets, setSnippets] = useState<BaseSnippet[] | null>(initialSnippets);
+  const router = useRouter();
 
   const deleteSingleSnippet = async (id: number) => {
     let tmpSnippets = [...snippets!];
@@ -17,30 +20,23 @@ const Snippets = () => {
       return i.id != id;
     });
     setSnippets(tmpSnippets);
-    toast.info("Snippet deleted");
+    // Refresh the page to update the snippet count and enable/disable the "Create New" button
+    router.refresh();
   };
 
-  useEffect(() => {
-    startTransition(async () => {
-      const result = await getMySnippets();
-      setSnippets(result.data);
-    });
-  }, []);
-
-  if (isPending || !snippets) {
+  if (!snippets) {
     return (
-      <div className="grid gap-4 grid-cols-3">
-        <SnippetCardSkeleton />
-        <SnippetCardSkeleton />
-        <SnippetCardSkeleton />
+      <div className="">
+        <p className="font-bold text-red-500">No Snippets Yet! 🥹</p>
       </div>
     );
   }
+
   return (
     <div className="">
       <Toaster position="top-right" />
       {snippets.length > 0 ? (
-        <div className="grid gap-4 grid-cols-3">
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {snippets &&
             snippets?.map((snippet) => (
               <SnippetCard
@@ -51,8 +47,15 @@ const Snippets = () => {
             ))}
         </div>
       ) : (
-        <div className="">
-          <p className="font-bold text-red-500">No Snippets Yet! 🥹</p>
+        <div className="flex flex-col items-center justify-center py-16 px-4">
+          <div className="text-center space-y-2">
+            <p className="text-lg font-semibold text-muted-foreground">
+              No Snippets Yet! 🥹
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Create your first snippet to get started
+            </p>
+          </div>
         </div>
       )}
     </div>

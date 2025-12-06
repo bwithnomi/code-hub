@@ -1,40 +1,61 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect } from "react";
 import { SidebarTrigger } from "./ui/sidebar";
 import { Input } from "./ui/input";
-import { currentUser } from "@clerk/nextjs/server";
-import ThemeModeToggle from "./ThemeModeToggle";
 import { SignedIn, UserButton } from "@clerk/nextjs";
-import Link from "next/link";
-import { UserIcon } from "lucide-react";
-import { Button } from "./ui/button";
-import { syncUser } from "@/actions/user.action";
+import { Search, X } from "lucide-react";
+import { useDebounce } from "@/lib/debounce";
+import { useRouter } from "next/navigation";
 
-async function Navbar() {
-  const user = await currentUser();
-  if (user) await syncUser();
-  
+function Navbar() {
+  const [search, setSearch] = useState<string>("");
+  const debouncedSearch = useDebounce(search, 500);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (debouncedSearch.trim()) {
+      router.push(`/dashboard/search?q=${encodeURIComponent(debouncedSearch.trim())}`);
+    }
+  }, [debouncedSearch, router]);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && search.trim()) {
+      router.push(`/dashboard/search?q=${encodeURIComponent(search.trim())}`);
+    }
+  };
+
+  const clearSearch = () => {
+    setSearch("");
+  };
+
   return (
     <div className="bg-slate-200  h-full w-full dark:bg-slate-800 px-4">
       <div className="flex justify-between items-center h-full py-2">
         <SidebarTrigger />
-        <div className=" py-2 w-80">
-          <Input type="search" placeholder="Search" className="bg-slate-100" />
+        <div className="py-2 w-80 relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+          <Input
+            type="text"
+            placeholder="Search"
+            className="bg-slate-100 pl-10 pr-10"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={handleKeyDown}
+          />
+          {search && (
+            <button
+              onClick={clearSearch}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          )}
         </div>
         <div className="">
-          <div className="flex items-center justify-between gap-2">
-            <ThemeModeToggle></ThemeModeToggle>
-            <Button variant="ghost" className="flex items-center gap-2" asChild>
-              <Link
-                href={`/dashboard/profile/`}
-              >
-                <UserIcon className="w-4 h-4" />
-                <span className="hidden lg:inline">Profile</span>
-              </Link>
-            </Button>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-          </div>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
         </div>
       </div>
     </div>
