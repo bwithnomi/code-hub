@@ -15,7 +15,7 @@ export default function Home() {
             <div className="logo">
               <Link
                 href="/"
-                className="text-lg sm:text-xl font-bold text-primary font-mono tracking-wider"
+                className="text-lg sm:text-xl font-bold text-white font-mono tracking-wider"
               >
                 CodeHub
               </Link>
@@ -46,7 +46,7 @@ export default function Home() {
                   <Button
                     variant="default"
                     size="sm"
-                    className="bg-transparent border-black border-2 text-black cursor-pointer hover:text-white dark:text-white dark:border-white text-xs sm:text-sm"
+                    className="bg-transparent border-white border-2 text-white cursor-pointer hover:bg-white/10 dark:text-white dark:border-white text-xs sm:text-sm"
                   >
                     Sign In
                   </Button>
