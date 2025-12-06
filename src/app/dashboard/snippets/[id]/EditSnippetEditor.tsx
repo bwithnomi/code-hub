@@ -41,7 +41,7 @@ export default function EditSnippetEditor({
   const [visibility, setVisibility] = useState<string | undefined>(snippet.visibility || undefined);
   const [title, setTitle] = useState<string>(snippet.title);
   const [files, setFiles] = useState(
-    snippet.files.map((f) => ({
+    (snippet.files || []).map((f) => ({
       language: f.language,
       content: f.code,
     }))

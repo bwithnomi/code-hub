@@ -5,9 +5,10 @@ import { getSearchableSnippetCount, getMySnippetCount } from '@/actions/snippets
 const page = async ({
   searchParams,
 }: {
-  searchParams: { q?: string }
+  searchParams: Promise<{ q?: string }>
 }) => {
-  const initialQuery = (await searchParams)?.q || "";
+  const resolvedSearchParams = await searchParams;
+  const initialQuery = resolvedSearchParams?.q || "";
 
   // Fetch counts in parallel on the server
   const [publicCountResult, myCountResult] = await Promise.all([

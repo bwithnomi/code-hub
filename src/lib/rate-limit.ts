@@ -70,7 +70,7 @@ export async function checkRateLimit(
         key,
         windowStart,
         now,
-        { byScore: true, limit: { offset: 0, count: 1 } }
+        { byScore: true, offset: 0, count: 1 }
       );
       
       if (oldestTimestamps.length > 0) {

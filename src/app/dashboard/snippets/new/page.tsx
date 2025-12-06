@@ -2,6 +2,8 @@ import { getMySnippetCount } from "@/actions/snippets.action";
 import { getUserPreferences } from "@/actions/user-preferences.action";
 import NewSnippetEditor from "./NewSnippetEditor";
 
+export const dynamic = 'force-dynamic';
+
 export default async function page() {
   // Fetch preferences and snippet count in parallel on the server
   const [prefsResult, countResult] = await Promise.all([
