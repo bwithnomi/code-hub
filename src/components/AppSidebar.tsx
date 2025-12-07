@@ -12,10 +12,11 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "./ui/sidebar";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Code, Home, Inbox, LogOut, Search, Settings } from "lucide-react";
+import { Code, Home, Inbox, LogOut, Search, Settings, Github, Linkedin, Mail, Phone } from "lucide-react";
 import { SignOutButton } from "@clerk/nextjs";
 
 const items = [
@@ -40,6 +41,48 @@ const items = [
     icon: Settings,
   },
 ];
+
+function SocialLinks() {
+  const { state } = useSidebar();
+  const isCollapsed = state === "collapsed";
+
+  return (
+    <div className={`flex items-center justify-center gap-2 px-2 py-2 mb-2 ${isCollapsed ? "flex-col gap-1" : "flex-row"}`}>
+      <Link
+        href="https://www.linkedin.com/in/bwithnomi"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-muted-foreground hover:text-foreground transition-colors"
+        aria-label="LinkedIn"
+      >
+        <Linkedin size={18} />
+      </Link>
+      <Link
+        href="https://github.com/bwithnomi"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-muted-foreground hover:text-foreground transition-colors"
+        aria-label="GitHub"
+      >
+        <Github size={18} />
+      </Link>
+      <Link
+        href="mailto:abidnoman888@gmail.com"
+        className="text-muted-foreground hover:text-foreground transition-colors"
+        aria-label="Email"
+      >
+        <Mail size={18} />
+      </Link>
+      <Link
+        href="tel:+923325671932"
+        className="text-muted-foreground hover:text-foreground transition-colors"
+        aria-label="Phone"
+      >
+        <Phone size={18} />
+      </Link>
+    </div>
+  );
+}
 
 function AppSidebar() {
   const pathname = usePathname();
@@ -84,6 +127,9 @@ function AppSidebar() {
         </SidebarContent>
         <SidebarFooter>
           <SidebarMenu>
+            <SidebarMenuItem>
+              <SocialLinks />
+            </SidebarMenuItem>
             <SidebarMenuItem>
               <SignOutButton>
                 <SidebarMenuButton tooltip="Sign Out" className="cursor-pointer w-full">

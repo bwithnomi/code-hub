@@ -1,4 +1,5 @@
 import ThemeModeToggle from "@/components/ThemeModeToggle";
+import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { db } from "@/db";
 import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
@@ -312,6 +313,7 @@ export default function Home() {
           </Button>
         </SignedIn>
       </div>
+      <Footer />
     </div>
   );
 }
