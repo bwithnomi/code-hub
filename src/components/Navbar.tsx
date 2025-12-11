@@ -33,7 +33,7 @@ function Navbar() {
     <div className="bg-slate-200  h-full w-full dark:bg-slate-800 px-4">
       <div className="flex justify-between items-center h-full py-2">
         <SidebarTrigger />
-        <div className="py-2 w-80 relative">
+        <div className="py-2 sm:w-80 w-60 relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
           <Input
             type="text"

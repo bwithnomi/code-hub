@@ -12,7 +12,7 @@ export default function Home() {
     <div className="p-2 sm:p-4">
       <div className="bg-gradient-to-br from-slate-600 via-slate-700 to-slate-800 dark:from-slate-800 dark:via-slate-900 dark:to-slate-950 rounded-2xl px-4 sm:px-6 md:px-8 py-3">
         <nav>
-          <div className="flex flex-col sm:flex-row justify-between gap-4 sm:gap-0">
+          <div className="flex flex-row justify-between gap-4 sm:gap-0">
             <div className="logo">
               <Link
                 href="/"
